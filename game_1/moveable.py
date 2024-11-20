@@ -1,10 +1,10 @@
 from direction import Direction
+import pygame
 
 class Moveable:
-    def __init__(self, speed, width, height, x, y: int):
+    def __init__(self, speed, image: pygame.Surface, x, y: int):
         self.speed = speed
-        self.width = width
-        self.height = height
+        self.image = image
         self.x = x
         self.y = y
 

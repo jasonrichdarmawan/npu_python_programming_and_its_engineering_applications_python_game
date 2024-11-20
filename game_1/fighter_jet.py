@@ -3,16 +3,19 @@ from game_window import GAME_WINDOW
 from moveable import Moveable
 from direction import Direction
 from assets import get_image, get_image_metadata
+from typing import Callable
 
 # 战斗机类 Fighter Jet class
 class FighterJet(Moveable):
-    def __init__(self, type: str, speed: int, x: int, y: int):
+    def __init__(self, type: str, speed: int, x: int, y: int, append_bullet_in_flight: Callable[[Moveable], None]):
         self.image = get_image(type)
         self.image_metadata = get_image_metadata(type)
     
-        super().__init__(speed, self.image_metadata["width"], self.image_metadata["height"], x, y)
+        super().__init__(speed, self.image, x, y)
         # TODO: delete the following line
         self.bullets: list[Bullet] = []
+
+        self.append_bullet_in_flight = append_bullet_in_flight
 
         self.bullets_left = 10
 
@@ -40,11 +43,14 @@ class FighterJet(Moveable):
             return
         self.bullets_left -= 1
         
-        bullet_width = get_image_metadata("bullet")["width"]
+        bullet_image_metadata = get_image_metadata("bullet")
+        bullet_width = bullet_image_metadata["width"]
+        bullet_height = bullet_image_metadata["height"]
+
         bullet_x = self.x + self.image_metadata["width"] // 2 - bullet_width // 2
-        bullet_y = self.y
-        bullet = Bullet(10, bullet_x, bullet_y)
-        self.bullets.append(bullet)
+        bullet_y = self.y + self.image_metadata["height"] + bullet_height
+        bullet = Bullet(10, Direction.UP, bullet_x, bullet_y)
+        self.append_bullet_in_flight(bullet)
 
     def draw(self):
         GAME_WINDOW.blit(self.image, (self.x, self.y))

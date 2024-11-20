@@ -5,13 +5,14 @@ from direction import Direction
 
 # 子弹类 Bullet
 class Bullet(Moveable):
-    def __init__(self, speed, x, y):
-        self.__image = get_image("bullet")
-        self.__image_metadata = get_image_metadata("bullet")
-        super().__init__(speed, self.__image_metadata["width"], self.__image_metadata["height"], x, y)
+    def __init__(self, speed, direction, x, y):
+        self.image = get_image("bullet")
+        self.image_metadata = get_image_metadata("bullet")
+        super().__init__(speed, self.image, x, y)
+        self.direction = direction
 
-    def move(self, direction: Direction):
-        super().move(direction)
+    def move(self):
+        super().move(self.direction)
 
     def draw(self):
         GAME_WINDOW.blit(self.__image, (self.x, self.y))
