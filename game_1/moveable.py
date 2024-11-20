@@ -1,8 +1,10 @@
 from direction import Direction
 
 class Moveable:
-    def __init__(self, speed: int, x: int, y: int):
+    def __init__(self, speed, width, height, x, y: int):
         self.speed = speed
+        self.width = width
+        self.height = height
         self.x = x
         self.y = y
 

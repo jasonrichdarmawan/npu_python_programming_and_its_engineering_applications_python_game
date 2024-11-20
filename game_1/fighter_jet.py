@@ -6,12 +6,15 @@ from assets import get_image, get_image_metadata
 
 # 战斗机类 Fighter Jet class
 class FighterJet(Moveable):
-    def __init__(self, speed: int, x: int, y: int):
-        super().__init__(speed, x, y)
+    def __init__(self, type: str, speed: int, x: int, y: int):
+        self.image = get_image(type)
+        self.image_metadata = get_image_metadata(type)
+    
+        super().__init__(speed, self.image_metadata["width"], self.image_metadata["height"], x, y)
+        # TODO: delete the following line
         self.bullets: list[Bullet] = []
 
-        self.image = get_image("fighter_2")
-        self.image_metadata = get_image_metadata("fighter_2")
+        self.bullets_left = 10
 
         self.right_boundary = GAME_WINDOW.get_width() - self.image_metadata["width"]
         self.bottom_boundary = GAME_WINDOW.get_height() - self.image_metadata["height"]
@@ -33,6 +36,10 @@ class FighterJet(Moveable):
         self.__check_boundaries()
 
     def shoot(self):
+        if self.bullets_left < 0:
+            return
+        self.bullets_left -= 1
+        
         bullet_width = get_image_metadata("bullet")["width"]
         bullet_x = self.x + self.image_metadata["width"] // 2 - bullet_width // 2
         bullet_y = self.y

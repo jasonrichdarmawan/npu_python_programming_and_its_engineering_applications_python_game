@@ -6,18 +6,19 @@ Created on Fri Nov  1 14:44:55 2024
 """
 
 import pygame
-from game_window import GAME_WINDOW, GAME_WINDOW_HEIGHT
+from game_window import GAME_WINDOW, GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT
 from fighter_jet import FighterJet
-from enemy import Enemy
 from direction import Direction
 from assets.assets import get_image_metadata
+import random
 
 # 初始化Pygame Initializing Pygame
 pygame.init()
 
 # 创建战斗机对象 Create a fighter object
-fighter = FighterJet(5, 100, 1000)
-enemy_1 = Enemy()
+fighter = FighterJet("fighter_2", 5, 100, 1000)
+x = random.randint(0, GAME_WINDOW_WIDTH)
+enemy_1 = FighterJet("enemy", 3, x, 0)
 
 enemies = [enemy_1]
 
@@ -43,11 +44,12 @@ while running:
 
     # 移动和绘制敌机 Moving and drawing enemy aircraft
     for enemy in enemies:
-        enemy.move()
+        enemy.move(Direction.DOWN)
         enemy.draw()
-        if enemy.y > GAME_WINDOW_HEIGHT:
+        if enemy.y >= enemy.bottom_boundary:
             enemies.remove(enemy)
-            new_enemy = Enemy()
+            x = random.randint(0, GAME_WINDOW_WIDTH)
+            new_enemy = FighterJet("enemy", 3, x, 0)
             enemies.append(new_enemy)
 
     # 移动和绘制子弹 Moving and drawing bullets
