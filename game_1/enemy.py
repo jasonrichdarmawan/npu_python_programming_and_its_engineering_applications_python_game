@@ -1,6 +1,6 @@
 import pygame
 import random
-from game_window import WINDOW, WINDOW_WIDTH
+from game_window import GAME_WINDOW, GAME_WINDOW_WIDTH
 from base_dir import BASE_DIR
 import os
 
@@ -14,7 +14,7 @@ ENEMY_IMAGE = pygame.transform.scale(ENEMY_IMAGE, (ENEMY_WIDTH, ENEMY_HEIGHT))
 # 敌机类 Enemy aircraft
 class Enemy:
     def __init__(self):
-        self.x = random.randint(0, WINDOW_WIDTH - ENEMY_WIDTH)
+        self.x = random.randint(0, GAME_WINDOW_WIDTH - ENEMY_WIDTH)
         self.y = random.randint(-200, - ENEMY_HEIGHT)
         self.speed = 3
 
@@ -22,4 +22,4 @@ class Enemy:
         self.y += self.speed
 
     def draw(self):
-        WINDOW.blit(ENEMY_IMAGE, (self.x, self.y))
+        GAME_WINDOW.blit(ENEMY_IMAGE, (self.x, self.y))

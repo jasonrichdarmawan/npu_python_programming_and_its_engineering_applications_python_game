@@ -6,16 +6,17 @@ Created on Fri Nov  1 14:44:55 2024
 """
 
 import pygame
-from game_window import WINDOW, WINDOW_HEIGHT
+from game_window import GAME_WINDOW, GAME_WINDOW_HEIGHT
 from fighter import Fighter
 from bullet import BULLET_WIDTH, BULLET_HEIGHT
 from enemy import Enemy, ENEMY_WIDTH, ENEMY_HEIGHT
+from direction import Direction
 
 # 初始化Pygame Initializing Pygame
 pygame.init()
 
 # 创建战斗机对象 Create a fighter object
-fighter = Fighter()
+fighter = Fighter(5, 100, 1000)
 enemy_1 = Enemy()
 
 enemies = [enemy_1]
@@ -25,7 +26,7 @@ running = True
 clock = pygame.time.Clock()
 while running:
     clock.tick(60)  # 设置帧率为60帧每秒 Set the frame rate to 60 frames per second
-    WINDOW.fill((0,0,0))
+    GAME_WINDOW.fill((0,0,0))
 
     # 处理事件 Handling Events
     for event in pygame.event.get():
@@ -34,9 +35,9 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        fighter.move_left()
+        fighter.move(direction=Direction.LEFT)
     if keys[pygame.K_RIGHT]:
-        fighter.move_right()
+        fighter.move(direction=Direction.RIGHT)
     if keys[pygame.K_SPACE]:
         fighter.shoot()
 
@@ -44,7 +45,7 @@ while running:
     for enemy in enemies:
         enemy.move()
         enemy.draw()
-        if enemy.y > WINDOW_HEIGHT:
+        if enemy.y > GAME_WINDOW_HEIGHT:
             enemies.remove(enemy)
             new_enemy = Enemy()
             enemies.append(new_enemy)

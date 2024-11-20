@@ -1,4 +1,4 @@
-from game_window import WINDOW
+from game_window import GAME_WINDOW
 from base_dir import BASE_DIR
 import pygame
 import os
@@ -21,4 +21,4 @@ class Bullet:
         self.y -= self.speed
 
     def draw(self):
-        WINDOW.blit(BULLET_IMAGE, (self.x, self.y))
+        GAME_WINDOW.blit(BULLET_IMAGE, (self.x, self.y))
