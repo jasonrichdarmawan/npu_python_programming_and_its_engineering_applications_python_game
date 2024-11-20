@@ -1,26 +1,20 @@
-import pygame
-from bullet import Bullet, BULLET_WIDTH
+from bullet import Bullet
 from game_window import GAME_WINDOW
-from base_dir import BASE_DIR
-import os
 from moveable import Moveable
 from direction import Direction
+from assets import get_image, get_image_metadata
 
-# 加载战斗机图片 Load fighter image
-FIGHTER_IMAGE_PATH = os.path.join(BASE_DIR, "assets", "fighter_2.png")
-FIGHTER_IMAGE = pygame.image.load(FIGHTER_IMAGE_PATH)
-FIGHTER_WIDTH = 50
-FIGHTER_HEIGHT = 50
-FIGHTER_IMAGE = pygame.transform.scale(FIGHTER_IMAGE, (FIGHTER_WIDTH, FIGHTER_HEIGHT))
-
-# 战斗机类 Fighter class
-class Fighter(Moveable):
+# 战斗机类 Fighter Jet class
+class FighterJet(Moveable):
     def __init__(self, speed: int, x: int, y: int):
         super().__init__(speed, x, y)
         self.bullets: list[Bullet] = []
 
-        self.right_boundary = GAME_WINDOW.get_width() - FIGHTER_WIDTH
-        self.bottom_boundary = GAME_WINDOW.get_height() - FIGHTER_HEIGHT
+        self.image = get_image("fighter_2")
+        self.image_metadata = get_image_metadata("fighter_2")
+
+        self.right_boundary = GAME_WINDOW.get_width() - self.image_metadata["width"]
+        self.bottom_boundary = GAME_WINDOW.get_height() - self.image_metadata["height"]
 
         self.__check_boundaries()
     
@@ -39,12 +33,13 @@ class Fighter(Moveable):
         self.__check_boundaries()
 
     def shoot(self):
-        bullet_x = self.x + FIGHTER_WIDTH // 2 - BULLET_WIDTH // 2
+        bullet_width = get_image_metadata("bullet")["width"]
+        bullet_x = self.x + self.image_metadata["width"] // 2 - bullet_width // 2
         bullet_y = self.y
-        bullet = Bullet(bullet_x, bullet_y)
+        bullet = Bullet(10, bullet_x, bullet_y)
         self.bullets.append(bullet)
 
     def draw(self):
-        GAME_WINDOW.blit(FIGHTER_IMAGE, (self.x, self.y))
+        GAME_WINDOW.blit(self.image, (self.x, self.y))
         for bullet in self.bullets:
             bullet.draw()

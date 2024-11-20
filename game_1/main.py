@@ -7,16 +7,16 @@ Created on Fri Nov  1 14:44:55 2024
 
 import pygame
 from game_window import GAME_WINDOW, GAME_WINDOW_HEIGHT
-from fighter import Fighter
-from bullet import BULLET_WIDTH, BULLET_HEIGHT
-from enemy import Enemy, ENEMY_WIDTH, ENEMY_HEIGHT
+from fighter_jet import FighterJet
+from enemy import Enemy
 from direction import Direction
+from assets.assets import get_image_metadata
 
 # 初始化Pygame Initializing Pygame
 pygame.init()
 
 # 创建战斗机对象 Create a fighter object
-fighter = Fighter(5, 100, 1000)
+fighter = FighterJet(5, 100, 1000)
 enemy_1 = Enemy()
 
 enemies = [enemy_1]
@@ -52,7 +52,7 @@ while running:
 
     # 移动和绘制子弹 Moving and drawing bullets
     for bullet in fighter.bullets:
-        bullet.move()
+        bullet.move(Direction.UP)
         bullet.draw()
         if bullet.y < 0:
             fighter.bullets.remove(bullet)
@@ -60,8 +60,11 @@ while running:
     # 检测碰撞 Detecting collisions
     for bullet in fighter.bullets:
         for enemy in enemies:
-            if pygame.Rect(bullet.x, bullet.y, BULLET_WIDTH, BULLET_HEIGHT).colliderect(
-                pygame.Rect(enemy.x, enemy.y, ENEMY_WIDTH, ENEMY_HEIGHT)
+            bullet_metadata = get_image_metadata("bullet")
+            bullet_width = bullet_metadata["width"]
+            bullet_height = bullet_metadata["height"]
+            if pygame.Rect(bullet.x, bullet.y, bullet_width, bullet_height).colliderect(
+                pygame.Rect(enemy.x, enemy.y, enemy.image_metadata['width'], enemy.image_metadata['height'])
             ):
                 fighter.bullets.remove(bullet)
                 enemies.remove(enemy)
