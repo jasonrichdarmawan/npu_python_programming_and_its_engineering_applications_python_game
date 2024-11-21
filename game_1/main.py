@@ -32,7 +32,7 @@ def handle_player_input(player_fighter_jet: FighterJet):
     if keys[pygame.K_SPACE]:
         player_fighter_jet.shoot()
 
-def main_game_loop(game_engine):
+def main_game_loop(game_engine: GameEngine):
     "Main Game Loop"
     running = True
     clock = pygame.time.Clock()
@@ -41,11 +41,13 @@ def main_game_loop(game_engine):
 
         if game_engine.player_fighter_jet is None:
             running = False
+            break
 
         # 处理事件 Handling Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                break
     
         handle_player_input(game_engine.player_fighter_jet)
 

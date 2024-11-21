@@ -17,15 +17,8 @@ class GameEngine:
 
     def update_state(self):
         self.__check_collisions()
-        for enemy in self.enemy_fighter_jets:
-            enemy.move(Direction.DOWN)
-            if enemy.y >= enemy.bottom_boundary:
-                self.enemy_fighter_jets.remove(enemy)
-                self.enemy_fighter_jets.append(create_enemy_fighter_jet())
-        for bullet in self.bullets_in_flight:
-            bullet.move()
-            if bullet.y < 0:
-                self.bullets_in_flight.remove(bullet)
+        self.__update_enemies_state()
+        self.__update_bullets_state()
 
     # TODO: local check_collisions method
     def __check_collisions(self):
@@ -44,6 +37,21 @@ class GameEngine:
         rect1 = pygame.Rect(obj1.x, obj1.y, obj1.image.get_width(), obj1.image.get_width())
         rect2 = pygame.Rect(obj2.x, obj2.y, obj2.image.get_width(), obj2.image.get_height())
         return rect1.colliderect(rect2)
+    
+    def __update_enemies_state(self):
+        if self.enemy_fighter_jets == []:
+            self.enemy_fighter_jets.append(create_enemy_fighter_jet())
+        for enemy in self.enemy_fighter_jets:
+            enemy.move(Direction.DOWN)
+            if enemy.y >= enemy.bottom_boundary:
+                self.enemy_fighter_jets.remove(enemy)
+                self.enemy_fighter_jets.append(create_enemy_fighter_jet())
+
+    def __update_bullets_state(self):
+        for bullet in self.bullets_in_flight:
+            bullet.move()
+            if bullet.y < 0:
+                self.bullets_in_flight.remove(bullet)
 
     def update_screen(self):
         GAME_WINDOW.fill((0,0,0))
