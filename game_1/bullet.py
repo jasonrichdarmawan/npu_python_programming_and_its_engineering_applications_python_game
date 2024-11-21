@@ -13,6 +13,3 @@ class Bullet(Moveable):
 
     def move(self):
         super().move(self.direction)
-
-    def draw(self):
-        GAME_WINDOW.blit(self.__image, (self.x, self.y))

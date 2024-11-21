@@ -46,6 +46,7 @@ class GameEngine:
         return rect1.colliderect(rect2)
 
     def update_screen(self):
+        GAME_WINDOW.fill((0,0,0))
         if self.player_fighter_jet is not None:
             GAME_WINDOW.blit(self.player_fighter_jet.image, (self.player_fighter_jet.x, self.player_fighter_jet.y))
         for enemy_fighter_jet in self.enemy_fighter_jets:

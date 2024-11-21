@@ -12,8 +12,6 @@ class FighterJet(Moveable):
         self.image_metadata = get_image_metadata(type)
     
         super().__init__(speed, self.image, x, y)
-        # TODO: delete the following line
-        self.bullets: list[Bullet] = []
 
         self.append_bullet_in_flight = append_bullet_in_flight
 
@@ -51,8 +49,3 @@ class FighterJet(Moveable):
         bullet_y = self.y + self.image_metadata["height"] + bullet_height
         bullet = Bullet(10, Direction.UP, bullet_x, bullet_y)
         self.append_bullet_in_flight(bullet)
-
-    def draw(self):
-        GAME_WINDOW.blit(self.image, (self.x, self.y))
-        for bullet in self.bullets:
-            bullet.draw()
