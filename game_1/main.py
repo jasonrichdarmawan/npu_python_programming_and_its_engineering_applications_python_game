@@ -39,13 +39,13 @@ def main_game_loop(game_engine):
     while running:
         clock.tick(60) # 设置帧率为60帧每秒 Set the frame rate to 60 frames per second
 
+        if game_engine.player_fighter_jet is None:
+            running = False
+
         # 处理事件 Handling Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        if game_engine.player_fighter_jet is None:
-            running = False
     
         handle_player_input(game_engine.player_fighter_jet)
 

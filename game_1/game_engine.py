@@ -17,15 +17,15 @@ class GameEngine:
 
     def update_state(self):
         self.__check_collisions()
-        for obj in self.enemy_fighter_jets:
-            obj.move(Direction.DOWN)
-            if obj.y >= obj.bottom_boundary:
-                self.enemy_fighter_jets.remove(obj)
+        for enemy in self.enemy_fighter_jets:
+            enemy.move(Direction.DOWN)
+            if enemy.y >= enemy.bottom_boundary:
+                self.enemy_fighter_jets.remove(enemy)
                 self.enemy_fighter_jets.append(create_enemy_fighter_jet())
-        for obj in self.bullets_in_flight:
-            obj.move()
-            if obj.y < 0:
-                self.bullets_in_flight.remove(obj)
+        for bullet in self.bullets_in_flight:
+            bullet.move()
+            if bullet.y < 0:
+                self.bullets_in_flight.remove(bullet)
 
     # TODO: local check_collisions method
     def __check_collisions(self):
