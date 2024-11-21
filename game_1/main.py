@@ -6,18 +6,17 @@ Created on Fri Nov  1 14:44:55 2024
 """
 
 import pygame
-from game_window import GAME_WINDOW
 from fighter_jet import FighterJet
 from direction import Direction
-from create_enemy_fighter_jet import create_enemy_fighter_jet
 from game_engine import GameEngine
+from create_fighter_jet import create_fighter_jet
 
 def initialize_game_engine() -> GameEngine:
     "初始化Pygame Initializing Pygame"
     pygame.init()
     game_engine = GameEngine()
-    player_fighter_jet = FighterJet("fighter_2", 5, 100, 1000, game_engine.append_bullet_in_flight)
-    enemy_fighter_jets = [create_enemy_fighter_jet()]
+    player_fighter_jet = create_fighter_jet("fighter_2", game_engine.append_bullet_in_flight)
+    enemy_fighter_jets = [create_fighter_jet("enemy", game_engine.append_bullet_in_flight)]
     game_engine.player_fighter_jet = player_fighter_jet
     game_engine.enemy_fighter_jets = enemy_fighter_jets
     return game_engine
@@ -25,10 +24,16 @@ def initialize_game_engine() -> GameEngine:
 def handle_player_input(player_fighter_jet: FighterJet):
     "Handle player input"
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        player_fighter_jet.move(direction=Direction.LEFT)
-    if keys[pygame.K_RIGHT]:
+
+    if keys[pygame.K_UP]:
+        player_fighter_jet.move(direction=Direction.UP)
+    elif keys[pygame.K_RIGHT]:
         player_fighter_jet.move(direction=Direction.RIGHT)
+    elif keys[pygame.K_DOWN]:
+        player_fighter_jet.move(direction=Direction.DOWN)
+    elif keys[pygame.K_LEFT]:
+        player_fighter_jet.move(direction=Direction.LEFT)
+    
     if keys[pygame.K_SPACE]:
         player_fighter_jet.shoot()
 
@@ -39,17 +44,14 @@ def main_game_loop(game_engine: GameEngine):
     while running:
         clock.tick(60) # 设置帧率为60帧每秒 Set the frame rate to 60 frames per second
 
-        if game_engine.player_fighter_jet is None:
-            running = False
-            break
-
         # 处理事件 Handling Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 break
     
-        handle_player_input(game_engine.player_fighter_jet)
+        if game_engine.player_fighter_jet is not None:
+            handle_player_input(game_engine.player_fighter_jet)
 
         # Update game state
         game_engine.update_state()

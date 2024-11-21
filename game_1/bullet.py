@@ -1,15 +1,17 @@
-from game_window import GAME_WINDOW
-from assets import get_image, get_image_metadata
 from moveable import Moveable
 from direction import Direction
+from renderable import Renderable
 
 # 子弹类 Bullet
-class Bullet(Moveable):
+class Bullet(Moveable, Renderable):
     def __init__(self, speed, direction, x, y):
-        self.image = get_image("bullet")
-        self.image_metadata = get_image_metadata("bullet")
-        super().__init__(speed, self.image, x, y)
-        self.direction = direction
+        Moveable.__init__(self, speed, x, y)
+        Renderable.__init__(self, "bullet")
+        self.current_direction = direction
 
-    def move(self):
-        super().move(self.direction)
+    def move(self, direction: Direction = None):
+        if direction is None:
+            super().move(self.current_direction)
+            return
+
+        super().move(direction)
