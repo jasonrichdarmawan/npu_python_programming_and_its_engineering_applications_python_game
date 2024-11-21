@@ -1,3 +1,7 @@
+# Lesson learnt
+
+Game development is not for me. I tried to implement SOLID principles and failed miserably. The game worked, but, the code smells! Goodbye game development. I will stick as a Computer Vision engineer.
+
 # How to run?
 
 Run `$ python main.py`
@@ -19,7 +23,7 @@ Run `$ python main.py`
       3. **Methods**:
          - `move(direction: Direction)`: Move the object in the specified direction.
 
-- [ ] FighterJet Class (inherits from Moveable class)
+- [x] FighterJet Class (inherits from Moveable class)
       1. **Definition**: A fighter jet controlled by the user or AI.
       2. **Attributes**:
          1. `speed`: The speed of the fighter jet.
@@ -28,7 +32,7 @@ Run `$ python main.py`
          1. `move(direction: Direction)`: Move the fighter jet in the specific direction.
          2. `shoot()`: Fire a bullet from the fighter jet.
 
-- [ ] Bullet Class (inherits from Moveable class)
+- [x] Bullet Class (inherits from Moveable class)
       1. **Definition**: A bullet fired by the fighter jet.
       2. **Attributes**:
          1. `speed`: The speed of the bullet.
@@ -47,7 +51,7 @@ Run `$ python main.py`
          2. `decide_shoot()`: Decide whether to shoot to hit other aircraft.
          3. `execute()`: Execute the decided actions (move and shoot).
 
-- [ ] GameEngine Class
+- [x] GameEngine Class
       1. **Definition**: The core logic of the game.
       2. **Methods**:
          1. `check_collisions()`: Detect and handle collisions between bullets and fighter jets or between fighter jets.

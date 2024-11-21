@@ -2,16 +2,25 @@ from direction import Direction
 
 class Moveable:
     def __init__(self, speed, x, y: int):
-        self.speed = speed
-        self.x = x
-        self.y = y
+        self.__speed = speed
+        self.__x = x
+        self.__y = y
+
+    def get_position(self) -> tuple[int, int]:
+        return self.__x, self.__y
+    
+    def set_x(self, x: int):
+        self.__x = x
+    
+    def set_y(self, y: int):
+        self.__y = y
 
     def move(self, direction: Direction):
         if direction == Direction.LEFT:
-            self.x -= self.speed
+            self.__x -= self.__speed
         elif direction == Direction.RIGHT:
-            self.x += self.speed
+            self.__x += self.__speed
         elif direction == Direction.UP:
-            self.y -= self.speed
+            self.__y -= self.__speed
         elif direction == Direction.DOWN:
-            self.y += self.speed
+            self.__y += self.__speed

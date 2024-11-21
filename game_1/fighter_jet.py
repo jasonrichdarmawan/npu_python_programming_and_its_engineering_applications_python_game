@@ -28,14 +28,15 @@ class FighterJet(Moveable, Renderable):
         return self.__bottom_boundary
     
     def __handle_boundaries(self):
-        if self.x < 0:
-            self.x = 0
-        elif self.x > self.__right_boundary:
-            self.x = self.__right_boundary
-        if self.y < 0:
-            self.y = 0
-        elif self.y > self.__bottom_boundary:
-            self.y = self.__bottom_boundary
+        x, y = self.get_position()
+        if x < 0:
+            self.set_x(0)
+        elif x > self.__right_boundary:
+            self.set_x(self.__right_boundary)
+        if y < 0:
+            self.set_y(0)
+        elif y > self.__bottom_boundary:
+            self.set_y(self.__bottom_boundary)
 
     def move(self, direction: Direction):
         super().move(direction)
@@ -54,24 +55,26 @@ class FighterJet(Moveable, Renderable):
         self.__append_bullet_in_flight(bullet)
 
     def __calculate_bullet_position(self, direction: Direction):
-        image = self.get_image()
+        fighter_jet_image = self.get_image()
+        x, y = self.get_position()
+
         bullet_image_metadata = get_image_metadata("bullet")
         bullet_width = bullet_image_metadata["width"]
         bullet_height = bullet_image_metadata["height"]
 
         match direction:
             case Direction.UP:
-                bullet_x = self.x + image.get_width() // 2 - bullet_width // 2
-                bullet_y = self.y - bullet_height
+                bullet_x = x + fighter_jet_image.get_width() // 2 - bullet_width // 2
+                bullet_y = y - bullet_height
             case Direction.LEFT:
-                bullet_x = self.x - bullet_width
-                bullet_y = self.y + image.get_height() // 2 - bullet_width // 2
+                bullet_x = x - bullet_width
+                bullet_y = y + fighter_jet_image.get_height() // 2 - bullet_width // 2
             case Direction.DOWN:
-                bullet_x = self.x + image.get_width() // 2 - bullet_width // 2
-                bullet_y = self.y + image.get_height() + bullet_height
+                bullet_x = x + fighter_jet_image.get_width() // 2 - bullet_width // 2
+                bullet_y = y + fighter_jet_image.get_height() + bullet_height
             case Direction.RIGHT:
-                bullet_x = self.x + image.get_height() + bullet_height
-                bullet_y = self.y + image.get_width() // 2 - bullet_width // 2
+                bullet_x = x + fighter_jet_image.get_height() + bullet_height
+                bullet_y = y + fighter_jet_image.get_width() // 2 - bullet_width // 2
             case _: raise ValueError(f"Invalid direction: {direction}")
 
         return bullet_x, bullet_y
