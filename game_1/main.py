@@ -14,11 +14,9 @@ from create_fighter_jet import create_fighter_jet
 def initialize_game_engine() -> GameEngine:
     "初始化Pygame Initializing Pygame"
     pygame.init()
-    game_engine = GameEngine()
-    player_fighter_jet = create_fighter_jet("fighter_2", game_engine.append_bullet_in_flight)
-    enemy_fighter_jets = [create_fighter_jet("enemy", game_engine.append_bullet_in_flight)]
-    game_engine.player_fighter_jet = player_fighter_jet
-    game_engine.enemy_fighter_jets = enemy_fighter_jets
+    player_fighter_jet = create_fighter_jet("fighter_2")
+    enemy_fighter_jets = [create_fighter_jet("enemy")]
+    game_engine = GameEngine(player_fighter_jet, enemy_fighter_jets)
     return game_engine
 
 def handle_player_input(player_fighter_jet: FighterJet):

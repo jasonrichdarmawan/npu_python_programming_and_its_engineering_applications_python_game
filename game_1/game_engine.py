@@ -9,10 +9,13 @@ from moveable import Moveable
 import random
 
 class GameEngine:
-    def __init__(self):
-        self.player_fighter_jet: FighterJet = None
-        self.enemy_fighter_jets: list[FighterJet] = []
-        self.bullets_in_flight: list[Bullet] = []
+    def __init__(self, player_fighter_jet: FighterJet, enemy_fighter_jets: list[FighterJet]):
+        self.player_fighter_jet = player_fighter_jet
+        self.player_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
+        self.enemy_fighter_jets = enemy_fighter_jets
+        for enemy_fighter_jet in self.enemy_fighter_jets:
+            enemy_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
+        self.bullets_in_flight = []
 
     def append_bullet_in_flight(self, bullet: Bullet):
         self.bullets_in_flight.append(bullet)
@@ -20,13 +23,16 @@ class GameEngine:
     def update_state(self):
         self.__handle_collisions()
         self.__update_enemies_state()
+        if self.player_fighter_jet is None:
+            self.player_fighter_jet = self.__make_player_fighter_jet()
         self.__update_bullets_state()
 
     # TODO: local
     def __handle_collisions(self):
         # Check if any bullet is colliding with any fighter jet
         fighter_jets: list[Collidable] = []
-        fighter_jets.append(self.player_fighter_jet)
+        if self.player_fighter_jet is not None:
+            fighter_jets.append(self.player_fighter_jet)
         fighter_jets.extend(self.enemy_fighter_jets)
         fighter_jets_to_remove: list[Collidable] = []
         for fighter_jet in fighter_jets:
@@ -38,7 +44,7 @@ class GameEngine:
 
         for fighter_jet in fighter_jets_to_remove:
             if fighter_jet == self.player_fighter_jet:
-                self.player_fighter_jet = create_fighter_jet("fighter_2", self.append_bullet_in_flight)
+                self.player_fighter_jet = None
             else:
                 self.enemy_fighter_jets.remove(fighter_jet)
 
@@ -47,7 +53,7 @@ class GameEngine:
             return
         for enemy in self.enemy_fighter_jets:
             if self.__is_colliding(self.player_fighter_jet, enemy):
-                self.player_fighter_jet = create_fighter_jet("fighter_2", self.append_bullet_in_flight)
+                self.player_fighter_jet = None
                 self.enemy_fighter_jets.remove(enemy)
                 break
 
@@ -61,25 +67,40 @@ class GameEngine:
         rect2 = pygame.Rect(obj2_x, obj2_y, obj2_image.get_width(), obj2_image.get_height())
         return rect1.colliderect(rect2)
     
+    def __make_player_fighter_jet(self) -> FighterJet:
+        player_fighter_jet = create_fighter_jet("fighter_2")
+        player_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
+        return player_fighter_jet
+    
     def __update_enemies_state(self):
         if self.enemy_fighter_jets == []:
-            self.enemy_fighter_jets.append(create_fighter_jet("enemy", self.append_bullet_in_flight))
+            new_enemy = self.__make_enemy_fighter_jet()
+            self.enemy_fighter_jets.append(new_enemy)
         for enemy in self.enemy_fighter_jets:
             self.__make_enemy_decision(enemy)
             x, y = enemy.get_position()
             if x <= 0 or x >= enemy.get_right_boundary() or y <= 0 or y >= enemy.get_bottom_boundary():
                 self.enemy_fighter_jets.remove(enemy)
-                self.enemy_fighter_jets.append(create_fighter_jet("enemy", self.append_bullet_in_flight))
+                new_enemy = self.__make_enemy_fighter_jet()
+                self.enemy_fighter_jets.append(new_enemy)
     
+    def __make_enemy_fighter_jet(self) -> FighterJet:
+        enemy = create_fighter_jet("enemy")
+        enemy.set_append_bullet_in_flight(self.append_bullet_in_flight)
+        return enemy
+
     def __make_enemy_decision(self, fighter_jet: FighterJet):
-        decision = self.__try_shoot(fighter_jet)
+        decision = self.__try_shoot_with(fighter_jet)
 
         if decision: return
         
         direction = fighter_jet.get_direction()
         fighter_jet.move(direction)
 
-    def __try_shoot(self, fighter_jet: FighterJet):
+    def __try_shoot_with(self, fighter_jet: FighterJet) -> bool:
+        if self.player_fighter_jet is None:
+            return False
+
         player_x, player_y = self.player_fighter_jet.get_position()
         enemy_x, enemy_y = fighter_jet.get_position()
         x_abs = abs(player_x - enemy_x)

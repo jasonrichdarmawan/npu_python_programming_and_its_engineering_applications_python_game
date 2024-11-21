@@ -8,11 +8,11 @@ from renderable import Renderable
 
 # 战斗机类 Fighter Jet class
 class FighterJet(Moveable, Renderable):
-    def __init__(self, type: str, speed: int, x: int, y: int, bullets_capacity, append_bullet_in_flight: Callable[[Bullet], None]):    
+    def __init__(self, type: str, speed: int, x: int, y: int, bullets_capacity):    
         Moveable.__init__(self, speed, x, y)
         Renderable.__init__(self, type)
 
-        self.__append_bullet_in_flight = append_bullet_in_flight
+        self.__append_bullet_in_flight: Callable[[Bullet], None] = None
         self.__bullets_left = bullets_capacity
 
         image = self.get_image()
@@ -20,6 +20,9 @@ class FighterJet(Moveable, Renderable):
         self.__bottom_boundary = GAME_WINDOW.get_height() - image.get_height()
 
         self.__handle_boundaries()
+
+    def set_append_bullet_in_flight(self, callback: Callable[[Bullet], None]):
+        self.__append_bullet_in_flight = callback
 
     def get_right_boundary(self) -> int:
         return self.__right_boundary
