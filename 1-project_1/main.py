@@ -18,7 +18,7 @@ def __init_game_engine() -> GameEngine:
     game_engine = GameEngine(player_fighter_jet, enemy_fighter_jets)
     return game_engine
 
-def handle_player_input(game_engine: GameEngine):
+def __handle_player_input(game_engine: GameEngine):
     "Handle player input"
     keys = pygame.key.get_pressed()
 
@@ -37,7 +37,7 @@ def handle_player_input(game_engine: GameEngine):
     if keys[pygame.K_SPACE]:
         game_engine.player_fighter_jet.shoot()
 
-def main_game_loop(game_engine: GameEngine):
+def __main_game_loop(game_engine: GameEngine):
     "Main Game Loop"
     clock = pygame.time.Clock()
     while game_engine.running:
@@ -50,7 +50,7 @@ def main_game_loop(game_engine: GameEngine):
                 break
     
         if game_engine.player_fighter_jet is not None:
-            handle_player_input(game_engine)
+            __handle_player_input(game_engine)
 
         # Update game state
         game_engine.update_state()
@@ -63,4 +63,4 @@ def main_game_loop(game_engine: GameEngine):
 
 if __name__ == "__main__":
     game_engine = __init_game_engine()
-    main_game_loop(game_engine)
+    __main_game_loop(game_engine)
