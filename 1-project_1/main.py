@@ -6,7 +6,6 @@ Created on Fri Nov  1 14:44:55 2024
 """
 
 import pygame
-from fighter_jet import FighterJet
 from direction import Direction
 from game_engine import GameEngine
 from create_fighter_jet import create_fighter_jet

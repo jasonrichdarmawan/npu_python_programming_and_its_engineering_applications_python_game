@@ -1,6 +1,7 @@
 # How to run the game?
 
-- Type in the terminal `$ python main.py`
+- Type in the terminal `$ pip install -r requirements.txt` to install the required packages.
+- Type in the terminal `$ python main.py`.
 
    To quit, press `Q` or `esc`.
 
