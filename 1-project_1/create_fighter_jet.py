@@ -1,5 +1,3 @@
-from typing import Callable
-from bullet import Bullet
 from fighter_jet import FighterJet
 import random
 from game_window import GAME_WINDOW

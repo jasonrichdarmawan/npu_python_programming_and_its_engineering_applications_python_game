@@ -19,37 +19,39 @@ def initialize_game_engine() -> GameEngine:
     game_engine = GameEngine(player_fighter_jet, enemy_fighter_jets)
     return game_engine
 
-def handle_player_input(player_fighter_jet: FighterJet):
+def handle_player_input(game_engine: GameEngine):
     "Handle player input"
     keys = pygame.key.get_pressed()
 
+    if keys[pygame.K_q] or keys[pygame.K_ESCAPE]:
+        game_engine.running = False
+
     if keys[pygame.K_UP]:
-        player_fighter_jet.move(direction=Direction.UP)
+        game_engine.player_fighter_jet.move(direction=Direction.UP)
     elif keys[pygame.K_RIGHT]:
-        player_fighter_jet.move(direction=Direction.RIGHT)
+        game_engine.player_fighter_jet.move(direction=Direction.RIGHT)
     elif keys[pygame.K_DOWN]:
-        player_fighter_jet.move(direction=Direction.DOWN)
+        game_engine.player_fighter_jet.move(direction=Direction.DOWN)
     elif keys[pygame.K_LEFT]:
-        player_fighter_jet.move(direction=Direction.LEFT)
+        game_engine.player_fighter_jet.move(direction=Direction.LEFT)
     
     if keys[pygame.K_SPACE]:
-        player_fighter_jet.shoot()
+        game_engine.player_fighter_jet.shoot()
 
 def main_game_loop(game_engine: GameEngine):
     "Main Game Loop"
-    running = True
     clock = pygame.time.Clock()
-    while running:
+    while game_engine.running:
         clock.tick(60) # 设置帧率为60帧每秒 Set the frame rate to 60 frames per second
 
         # 处理事件 Handling Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                game_engine.running = False
                 break
     
         if game_engine.player_fighter_jet is not None:
-            handle_player_input(game_engine.player_fighter_jet)
+            handle_player_input(game_engine)
 
         # Update game state
         game_engine.update_state()

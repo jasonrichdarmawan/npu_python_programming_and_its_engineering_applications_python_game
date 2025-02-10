@@ -29,17 +29,6 @@ class FighterJet(Moveable, Renderable):
     
     def get_bottom_boundary(self) -> int:
         return self.__bottom_boundary
-    
-    def __handle_boundaries(self):
-        x, y = self.get_position()
-        if x < 0:
-            self.set_x(0)
-        elif x > self.__right_boundary:
-            self.set_x(self.__right_boundary)
-        if y < 0:
-            self.set_y(0)
-        elif y > self.__bottom_boundary:
-            self.set_y(self.__bottom_boundary)
 
     def move(self, direction: Direction):
         super().move(direction)
@@ -56,6 +45,17 @@ class FighterJet(Moveable, Renderable):
         bullet_x, bullet_y = self.__calculate_bullet_position(self.get_direction())
         bullet = Bullet(10, direction, bullet_x, bullet_y)
         self.__append_bullet_in_flight(bullet)
+
+    def __handle_boundaries(self):
+        x, y = self.get_position()
+        if x < 0:
+            self.set_x(0)
+        elif x > self.__right_boundary:
+            self.set_x(self.__right_boundary)
+        if y < 0:
+            self.set_y(0)
+        elif y > self.__bottom_boundary:
+            self.set_y(self.__bottom_boundary)
 
     def __calculate_bullet_position(self, direction: Direction):
         fighter_jet_image = self.get_image()

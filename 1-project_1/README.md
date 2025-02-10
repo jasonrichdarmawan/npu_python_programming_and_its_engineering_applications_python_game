@@ -1,10 +1,17 @@
-# Lesson learnt
+# How to run the game?
 
-Game development is not for me. I tried to implement SOLID principles and failed miserably. The game worked, but, the code smells! Goodbye game development. I will stick as a Computer Vision engineer.
+- Type in the terminal `$ python main.py`
 
-# How to run?
+   To quit, press `Q` or `esc`.
 
-Run `$ python main.py`
+# How to play the game?
+
+- How to shoot? Press the `spacebar`.
+- How to move? Press the `arrows`.
+   - `←` to move to the left.
+   - `↑` to go up.
+   - `→` to move to the right.
+   - `↓` to go down.
 
 # Improvement Plan
 

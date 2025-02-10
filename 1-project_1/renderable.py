@@ -7,14 +7,6 @@ class Renderable:
         self.__image = get_image(name)
         image_metadata = get_image_metadata(name)
         self.__direction = self.__init_current_direction(image_metadata['direction'])
-
-    def __init_current_direction(self, direction: str) -> Direction:
-        match direction:
-            case "up": return Direction.UP
-            case "right": return Direction.RIGHT
-            case "down": return Direction.DOWN
-            case "left": return Direction.LEFT
-            case _: raise ValueError(f"Invalid direction: {direction}")
             
     def get_image(self) -> pygame.Surface:
         return self.__image
@@ -31,6 +23,17 @@ class Renderable:
     
         self.__image = pygame.transform.rotate(self.__image, relative_angle)
         self.__direction = new_direction
+
+    def get_direction(self) -> Direction:
+        return self.__direction
+
+    def __init_current_direction(self, direction: str) -> Direction:
+        match direction:
+            case "up": return Direction.UP
+            case "right": return Direction.RIGHT
+            case "down": return Direction.DOWN
+            case "left": return Direction.LEFT
+            case _: raise ValueError(f"Invalid direction: {direction}")
     
     def __calculate_angle(self, direction: Direction) -> int:
         match direction:
@@ -43,6 +46,3 @@ class Renderable:
     def __calculate_relative_angle(self, current_angle, target_angle: int) -> int:
         relative_angle = target_angle - current_angle
         return relative_angle
-    
-    def get_direction(self) -> Direction:
-        return self.__direction

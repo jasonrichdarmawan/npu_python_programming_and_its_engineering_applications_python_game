@@ -6,10 +6,10 @@ from direction import Direction
 from create_fighter_jet import create_fighter_jet
 from collidable import Collidable
 from moveable import Moveable
-import random
 
 class GameEngine:
     def __init__(self, player_fighter_jet: FighterJet, enemy_fighter_jets: list[FighterJet]):
+        self.running = True
         self.player_fighter_jet = player_fighter_jet
         self.player_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
         self.enemy_fighter_jets = enemy_fighter_jets
