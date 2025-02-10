@@ -1,7 +1,7 @@
 from direction import Direction
 
 class Moveable:
-    def __init__(self, speed, x, y: int):
+    def __init__(self, speed: int, x: int, y: int):
         self.__speed = speed
         self.__x = x
         self.__y = y

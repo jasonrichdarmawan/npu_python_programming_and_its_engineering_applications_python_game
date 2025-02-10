@@ -9,7 +9,7 @@ class AssetMetadata(TypedDict):
 
 # Dictionary to store asset metadata
 # TODO: adhere to Open/Closed principle
-assets_metadata: Dict[str, AssetMetadata] = {
+ASSETS_METADATA: Dict[str, AssetMetadata] = {
     "fighter_1": {
         "path": "images/fighter_1.png",
         "width": 50,

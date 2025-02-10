@@ -1,16 +1,15 @@
 from bullet import Bullet
 from game_window import GAME_WINDOW
-from moveable import Moveable
 from direction import Direction
 from assets import get_image_metadata
 from typing import Callable
-from renderable import Renderable
+from collidable import Collidable
 
 # 战斗机类 Fighter Jet class
-class FighterJet(Moveable, Renderable):
-    def __init__(self, type: str, speed: int, x: int, y: int, bullets_capacity):    
-        Moveable.__init__(self, speed, x, y)
-        Renderable.__init__(self, type)
+class FighterJet(Collidable):
+    def __init__(self, type: str, speed: int, x: int, y: int, 
+                 bullets_capacity: int):
+        Collidable.__init__(self, speed, x, y, type)
 
         self.__append_bullet_in_flight: Callable[[Bullet], None] = None
         self.__bullets_left = bullets_capacity

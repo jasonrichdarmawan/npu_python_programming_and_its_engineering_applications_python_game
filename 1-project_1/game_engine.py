@@ -8,14 +8,15 @@ from collidable import Collidable
 from moveable import Moveable
 
 class GameEngine:
-    def __init__(self, player_fighter_jet: FighterJet, enemy_fighter_jets: list[FighterJet]):
+    def __init__(self, player_fighter_jet: FighterJet, 
+                 enemy_fighter_jets: list[FighterJet]):
         self.running = True
         self.player_fighter_jet = player_fighter_jet
         self.player_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
         self.enemy_fighter_jets = enemy_fighter_jets
         for enemy_fighter_jet in self.enemy_fighter_jets:
             enemy_fighter_jet.set_append_bullet_in_flight(self.append_bullet_in_flight)
-        self.bullets_in_flight = []
+        self.bullets_in_flight: list[Bullet] = []
 
     def append_bullet_in_flight(self, bullet: Bullet):
         self.bullets_in_flight.append(bullet)
@@ -27,7 +28,19 @@ class GameEngine:
             self.player_fighter_jet = self.__make_player_fighter_jet()
         self.__update_bullets_state()
 
-    # TODO: local
+    def update_screen(self):
+        GAME_WINDOW.fill((0,0,0))
+        if self.player_fighter_jet is not None:
+            position = self.player_fighter_jet.get_position()
+            GAME_WINDOW.blit(self.player_fighter_jet.get_image(), position)
+        for enemy_fighter_jet in self.enemy_fighter_jets:
+            position = enemy_fighter_jet.get_position()
+            GAME_WINDOW.blit(enemy_fighter_jet.get_image(), position)
+        for bullet_in_flight in self.bullets_in_flight:
+            position = bullet_in_flight.get_position()
+            GAME_WINDOW.blit(bullet_in_flight.get_image(), position)
+        pygame.display.update()
+
     def __handle_collisions(self):
         # Check if any bullet is colliding with any fighter jet
         fighter_jets: list[Collidable] = []
@@ -60,11 +73,13 @@ class GameEngine:
     def __is_colliding(self, obj1: Collidable, obj2: Collidable):
         obj1_x, obj1_y = obj1.get_position()
         obj1_image = obj1.get_image()
-        rect1 = pygame.Rect(obj1_x, obj1_y, obj1_image.get_width(), obj1_image.get_height())
+        rect1 = pygame.Rect(obj1_x, obj1_y, obj1_image.get_width(), 
+                            obj1_image.get_height())
 
         obj2_x, obj2_y = obj2.get_position()
         obj2_image = obj2.get_image()
-        rect2 = pygame.Rect(obj2_x, obj2_y, obj2_image.get_width(), obj2_image.get_height())
+        rect2 = pygame.Rect(obj2_x, obj2_y, obj2_image.get_width(), 
+                            obj2_image.get_height())
         return rect1.colliderect(rect2)
     
     def __make_player_fighter_jet(self) -> FighterJet:
@@ -79,7 +94,8 @@ class GameEngine:
         for enemy in self.enemy_fighter_jets:
             self.__make_enemy_decision(enemy)
             x, y = enemy.get_position()
-            if x <= 0 or x >= enemy.get_right_boundary() or y <= 0 or y >= enemy.get_bottom_boundary():
+            if (x <= 0 or x >= enemy.get_right_boundary() or 
+                y <= 0 or y >= enemy.get_bottom_boundary()):
                 self.enemy_fighter_jets.remove(enemy)
                 new_enemy = self.__make_enemy_fighter_jet()
                 self.enemy_fighter_jets.append(new_enemy)
@@ -115,7 +131,9 @@ class GameEngine:
         
         return False
 
-    def __get_relative_direction_to(self, fighter_jet1, fighter_jet2: Moveable, x_range, y_range: int) -> Direction:
+    def __get_relative_direction_to(self, fighter_jet1: Moveable, 
+                                    fighter_jet2: Moveable, 
+                                    x_range: int, y_range: int) -> Direction:
         fighter_jet1_x, fighter_jet1_y = fighter_jet1.get_position()
         fighter_jet2_x, fighter_jet2_y = fighter_jet2.get_position()
 
@@ -135,19 +153,9 @@ class GameEngine:
         for bullet in self.bullets_in_flight:
             bullet.move()
             x, y = bullet.get_position()
-            if x <= 0 or x >= GAME_WINDOW.get_width() or y <= 0 or y >= GAME_WINDOW.get_height():
+            if (x <= 0 or 
+                x >= GAME_WINDOW.get_width() or 
+                y <= 0 or 
+                y >= GAME_WINDOW.get_height()):
                 self.bullets_in_flight.remove(bullet)
-
-    def update_screen(self):
-        GAME_WINDOW.fill((0,0,0))
-        if self.player_fighter_jet is not None:
-            position = self.player_fighter_jet.get_position()
-            GAME_WINDOW.blit(self.player_fighter_jet.get_image(), position)
-        for enemy_fighter_jet in self.enemy_fighter_jets:
-            position = enemy_fighter_jet.get_position()
-            GAME_WINDOW.blit(enemy_fighter_jet.get_image(), position)
-        for bullet_in_flight in self.bullets_in_flight:
-            position = bullet_in_flight.get_position()
-            GAME_WINDOW.blit(bullet_in_flight.get_image(), position)
-        pygame.display.update()
 

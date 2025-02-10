@@ -10,7 +10,7 @@ from direction import Direction
 from game_engine import GameEngine
 from create_fighter_jet import create_fighter_jet
 
-def initialize_game_engine() -> GameEngine:
+def __init_game_engine() -> GameEngine:
     "初始化Pygame Initializing Pygame"
     pygame.init()
     player_fighter_jet = create_fighter_jet("fighter_2")
@@ -62,5 +62,5 @@ def main_game_loop(game_engine: GameEngine):
     pygame.quit()
 
 if __name__ == "__main__":
-    game_engine = initialize_game_engine()
+    game_engine = __init_game_engine()
     main_game_loop(game_engine)

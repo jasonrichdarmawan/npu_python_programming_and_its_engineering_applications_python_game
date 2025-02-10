@@ -19,7 +19,8 @@ class Renderable:
 
         current_angle = self.__calculate_angle(self.__direction)
         target_angle = self.__calculate_angle(new_direction)
-        relative_angle = self.__calculate_relative_angle(current_angle, target_angle)
+        relative_angle = self.__calculate_relative_angle(current_angle, 
+                                                         target_angle)
     
         self.__image = pygame.transform.rotate(self.__image, relative_angle)
         self.__direction = new_direction
@@ -43,6 +44,6 @@ class Renderable:
             case Direction.RIGHT: return 270
             case _: raise ValueError(f"Invalid direction: {direction}")
 
-    def __calculate_relative_angle(self, current_angle, target_angle: int) -> int:
+    def __calculate_relative_angle(self, current_angle: int, target_angle: int) -> int:
         relative_angle = target_angle - current_angle
         return relative_angle
