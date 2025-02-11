@@ -17,7 +17,12 @@ import sys
 class MediaPlayer(QMainWindow):
   """
   chore 1: remove exitCall(self) function
+  chore 2: add type annotations
   """
+  __meddiaPlayer__: QMediaPlayer
+  __playButton__: QPushButton
+  __positionSlider__: QSlider
+  __error__: QLabel
 
   def __init__(self):
     """
