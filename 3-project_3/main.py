@@ -6,6 +6,7 @@ Created on Thu Nov 21 16:41:45 2024
 """
 
 import os
+from typing import Callable, Any
 
 class DiaryApp:
   DIARY_FILE = "db/diary.txt"
@@ -53,7 +54,7 @@ class DiaryApp:
         case _: # default case
           print("Invalid choice. Please try again.")
 
-  def __pause_after__(func):
+  def __pauseAfter__(func: Callable[..., Any]):
     def wrapper(*args, **kwargs):
       os.system('clear')
       func(*args, **kwargs)
@@ -61,7 +62,7 @@ class DiaryApp:
       os.system('clear')
     return wrapper
 
-  @__pause_after__
+  @__pauseAfter__
   def __writeNewDiaryEntryDialog__(self):
     __running__ = True
 
@@ -97,7 +98,7 @@ class DiaryApp:
 
     print("Diary entry successfully written!")
 
-  @__pause_after__
+  @__pauseAfter__
   def __printDiaryEntries__(self):
     """
     Function to view all diary entries.
@@ -120,7 +121,7 @@ class DiaryApp:
       print("Preview:")
       print("%s...\n" % (preview))
 
-  @__pause_after__
+  @__pauseAfter__
   def __searchDiaryEntryByKeywordDialog__(self):
     """
     Function to search for diary entries based on a keyword.
@@ -157,7 +158,7 @@ class DiaryApp:
     else:
         print("No entries found matching the keyword.")
 
-  @__pause_after__
+  @__pauseAfter__
   def __deleteDiaryEntryDialog__(self):
     """
     Function to delete a specific diary entry.
