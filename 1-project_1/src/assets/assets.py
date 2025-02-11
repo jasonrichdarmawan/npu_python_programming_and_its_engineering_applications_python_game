@@ -1,7 +1,7 @@
 import pygame
 import os
 from .assets_metadata import ASSETS_METADATA, AssetMetadata
-from base_dir import BASE_DIR
+from ..base_dir import BASE_DIR
 
 # Dictionary to store loaded images
 loaded_images: dict[str, pygame.Surface] = {}

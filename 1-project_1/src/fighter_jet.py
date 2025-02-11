@@ -1,9 +1,9 @@
-from bullet import Bullet
-from game_window import GAME_WINDOW
-from direction import Direction
-from assets import get_image_metadata
+from .bullet import Bullet
+from .game_window import GAME_WINDOW
+from .direction import Direction
+from .assets import get_image_metadata
+from .collidable import Collidable
 from typing import Callable
-from collidable import Collidable
 
 # 战斗机类 Fighter Jet class
 class FighterJet(Collidable):

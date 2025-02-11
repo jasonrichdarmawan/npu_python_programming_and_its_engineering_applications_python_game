@@ -1,5 +1,5 @@
-from direction import Direction
-from collidable import Collidable
+from .direction import Direction
+from .collidable import Collidable
 
 # 子弹类 Bullet
 class Bullet(Collidable):

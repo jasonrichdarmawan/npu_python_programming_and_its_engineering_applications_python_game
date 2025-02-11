@@ -1,5 +1,5 @@
-from moveable import Moveable
-from renderable import Renderable
+from .moveable import Moveable
+from .renderable import Renderable
 
 class Collidable(Moveable, Renderable):
     def __init__(self, speed: int, x: int, y: int, name: str):

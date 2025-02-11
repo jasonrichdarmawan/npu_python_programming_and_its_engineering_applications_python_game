@@ -1,11 +1,11 @@
-from fighter_jet import FighterJet
+from .fighter_jet import FighterJet
+from .game_window import GAME_WINDOW
+from .bullet import Bullet
+from .direction import Direction
+from .create_fighter_jet import create_fighter_jet
+from .collidable import Collidable
+from .moveable import Moveable
 import pygame
-from game_window import GAME_WINDOW
-from bullet import Bullet
-from direction import Direction
-from create_fighter_jet import create_fighter_jet
-from collidable import Collidable
-from moveable import Moveable
 
 class GameEngine:
     def __init__(self, player_fighter_jet: FighterJet, 
@@ -47,19 +47,15 @@ class GameEngine:
         if self.player_fighter_jet is not None:
             fighter_jets.append(self.player_fighter_jet)
         fighter_jets.extend(self.enemy_fighter_jets)
-        fighter_jets_to_remove: list[Collidable] = []
         for fighter_jet in fighter_jets:
             for bullet in self.bullets_in_flight:
                 if self.__is_colliding(bullet, fighter_jet):
-                    fighter_jets_to_remove.append(fighter_jet)
+                    if fighter_jet == self.player_fighter_jet:
+                        self.player_fighter_jet = None
+                    else:
+                        self.enemy_fighter_jets.remove(fighter_jet)
                     self.bullets_in_flight.remove(bullet)
                     break
-
-        for fighter_jet in fighter_jets_to_remove:
-            if fighter_jet == self.player_fighter_jet:
-                self.player_fighter_jet = None
-            else:
-                self.enemy_fighter_jets.remove(fighter_jet)
 
         # Check if player fighter jet is colliding with any enemy fighter jet
         if self.player_fighter_jet is None:

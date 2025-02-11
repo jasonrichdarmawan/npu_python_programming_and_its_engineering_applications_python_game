@@ -1,6 +1,6 @@
+from .direction import Direction
+from .assets import get_image, get_image_metadata
 import pygame
-from direction import Direction
-from assets import get_image, get_image_metadata
 
 class Renderable:
     def __init__(self, name: str):

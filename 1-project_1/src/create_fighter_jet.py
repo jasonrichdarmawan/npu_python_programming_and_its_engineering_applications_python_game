@@ -1,6 +1,6 @@
-from fighter_jet import FighterJet
+from .fighter_jet import FighterJet
+from .game_window import GAME_WINDOW
 import random
-from game_window import GAME_WINDOW
 
 def create_fighter_jet(type: str) -> FighterJet:
     x = random.randint(0, GAME_WINDOW.get_width())

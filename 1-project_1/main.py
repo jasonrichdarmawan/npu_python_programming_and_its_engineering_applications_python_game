@@ -5,10 +5,10 @@ Created on Fri Nov  1 14:44:55 2024
 @author: HP
 """
 
+from src.direction import Direction
+from src.game_engine import GameEngine
+from src.create_fighter_jet import create_fighter_jet
 import pygame
-from direction import Direction
-from game_engine import GameEngine
-from create_fighter_jet import create_fighter_jet
 
 def __init_game_engine() -> GameEngine:
     "初始化Pygame Initializing Pygame"

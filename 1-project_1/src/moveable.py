@@ -1,4 +1,4 @@
-from direction import Direction
+from .direction import Direction
 
 class Moveable:
     def __init__(self, speed: int, x: int, y: int):
