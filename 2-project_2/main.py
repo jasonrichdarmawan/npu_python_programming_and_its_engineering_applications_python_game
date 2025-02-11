@@ -17,12 +17,9 @@ import sys
 class MediaPlayer(QMainWindow):
   """
   chore 1: remove exitCall(self) function
-  chore 2: add type annotations
   """
-  __mediaPlayer__: QMediaPlayer
-  __mediaPlayerPlayButton__: QPushButton
-  __mediaPlayerPositionSlider__: QSlider
-  __error__: QLabel
+
+  a: QPushButton
 
   def __init__(self):
     """
@@ -55,7 +52,7 @@ class MediaPlayer(QMainWindow):
     # Position slider
     self.__mediaPlayerPositionSlider__ = QSlider(Qt.Orientation.Horizontal)
     self.__mediaPlayerPositionSlider__.setRange(0, 0)
-    self.__mediaPlayerPositionSlider__.sliderMoved.connect(self.__setMediaPlayerPosition__)
+    self.__mediaPlayerPositionSlider__.sliderMoved.connect(self.__setMediaPlayerSetPosition__)
 
     # volume control
     volumeSlider = QSlider(Qt.Orientation.Horizontal)
@@ -147,7 +144,7 @@ class MediaPlayer(QMainWindow):
   def __mediaPlayerDurationChanged__(self, duration: int):
     self.__mediaPlayerPositionSlider__.setRange(0, duration)
 
-  def __setMediaPlayerPosition__(self, position: int):
+  def __setMediaPlayerSetPosition__(self, position: int):
     self.__mediaPlayer__.setPosition(position)
 
   def __handleError__(self):
