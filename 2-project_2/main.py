@@ -26,11 +26,11 @@ class MediaPlayer(QMainWindow):
     super().__init__()
     self.setWindowTitle("PyQt5 Media Player") 
 
-    self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.Flag.VideoSurface)
-    self.mediaPlayer.stateChanged.connect(self.__mediaPlayerStateChanged__)
-    self.mediaPlayer.positionChanged.connect(self.__mediaPlayerPositionChanged__)
-    self.mediaPlayer.durationChanged.connect(self.__mediaPlayerDurationChanged__)
-    self.mediaPlayer.error.connect(self.__handleError__)
+    self.__mediaPlayer__ = QMediaPlayer(None, QMediaPlayer.Flag.VideoSurface)
+    self.__mediaPlayer__.stateChanged.connect(self.__mediaPlayerStateChanged__)
+    self.__mediaPlayer__.positionChanged.connect(self.__mediaPlayerPositionChanged__)
+    self.__mediaPlayer__.durationChanged.connect(self.__mediaPlayerDurationChanged__)
+    self.__mediaPlayer__.error.connect(self.__handleError__)
 
     self.__setup_ui__()
 
@@ -42,21 +42,21 @@ class MediaPlayer(QMainWindow):
     videoWidget = QVideoWidget()
 
     # Play button
-    self.playButton = QPushButton()
-    self.playButton.setEnabled(False)
-    self.playButton.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
-    self.playButton.clicked.connect(self.__playMediaPlayer__)
+    self.__playButton__ = QPushButton()
+    self.__playButton__.setEnabled(False)
+    self.__playButton__.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
+    self.__playButton__.clicked.connect(self.__playMediaPlayer__)
 
     # Position slider
-    self.positionSlider = QSlider(Qt.Orientation.Horizontal)
-    self.positionSlider.setRange(0, 0)
-    self.positionSlider.sliderMoved.connect(self.__setMediaPlayerPosition__)
+    self.__positionSlider__ = QSlider(Qt.Orientation.Horizontal)
+    self.__positionSlider__.setRange(0, 0)
+    self.__positionSlider__.sliderMoved.connect(self.__setMediaPlayerPosition__)
 
     # volume control
     volumeSlider = QSlider(Qt.Orientation.Horizontal)
     volumeSlider.setRange(0, 100)
     volumeSlider.setValue(100)
-    volumeSlider.sliderMoved.connect(self.mediaPlayer.setVolume)
+    volumeSlider.sliderMoved.connect(self.__mediaPlayer__.setVolume)
     volumeIcon = QLabel()
     volumeIcon.setPixmap(self.style().standardPixmap(QStyle.StandardPixmap.SP_MediaVolume))
     volumeLayout = QHBoxLayout()
@@ -64,8 +64,8 @@ class MediaPlayer(QMainWindow):
     volumeLayout.addWidget(volumeSlider)
 
     # Error label
-    self.error = QLabel()
-    self.error.setSizePolicy(QSizePolicy.Policy.Preferred, 
+    self.__error__ = QLabel()
+    self.__error__.setSizePolicy(QSizePolicy.Policy.Preferred, 
                              QSizePolicy.Policy.Maximum)
     
     # Open Media File button
@@ -77,14 +77,14 @@ class MediaPlayer(QMainWindow):
     # Layout for controls
     controlLayout = QHBoxLayout()
     controlLayout.setContentsMargins(0, 0, 0, 0)
-    controlLayout.addWidget(self.playButton)
-    controlLayout.addWidget(self.positionSlider)
+    controlLayout.addWidget(self.__playButton__)
+    controlLayout.addWidget(self.__positionSlider__)
 
     mainLayout = QVBoxLayout()
     mainLayout.addWidget(videoWidget)
     mainLayout.addLayout(controlLayout)
     mainLayout.addLayout(volumeLayout)
-    mainLayout.addWidget(self.error)
+    mainLayout.addWidget(self.__error__)
     mainLayout.addWidget(openMediaFileButton)
 
     # Create a widget for window contents
@@ -93,16 +93,16 @@ class MediaPlayer(QMainWindow):
     self.setCentralWidget(centralWidget)
 
     # Set video output
-    self.mediaPlayer.setVideoOutput(videoWidget)
+    self.__mediaPlayer__.setVideoOutput(videoWidget)
 
   def __resetState__(self):
     """
     fix 1: error message is not cleared
     fix 2: position slider is not hidden when media is not loaded
     """
-    self.playButton.setEnabled(False)
-    self.positionSlider.setRange(0, 0)
-    self.error.setText("")
+    self.__playButton__.setEnabled(False)
+    self.__positionSlider__.setRange(0, 0)
+    self.__error__.setText("")
 
   def __openMediaFile__(self):
     """
@@ -116,38 +116,38 @@ class MediaPlayer(QMainWindow):
     if fileName != '':
       self.__resetState__()
 
-      self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
-      self.playButton.setEnabled(True)
+      self.__mediaPlayer__.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
+      self.__playButton__.setEnabled(True)
 
   def __playMediaPlayer__(self):
     """
     chore 2: rename play to __playMediaPlayer__ to make it more specific
     """
-    if self.mediaPlayer.state() == QMediaPlayer.State.PlayingState:
-      self.mediaPlayer.pause()
+    if self.__mediaPlayer__.state() == QMediaPlayer.State.PlayingState:
+      self.__mediaPlayer__.pause()
     else:
-      self.mediaPlayer.play()
+      self.__mediaPlayer__.play()
 
   def __mediaPlayerStateChanged__(self, state: QMediaPlayer.State):
     if state == QMediaPlayer.State.PlayingState:
-      self.playButton.setIcon(self.style()
+      self.__playButton__.setIcon(self.style()
                                   .standardIcon(QStyle.StandardPixmap.SP_MediaPause))
     else:
-      self.playButton.setIcon(self.style()
+      self.__playButton__.setIcon(self.style()
                                   .standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
 
   def __mediaPlayerPositionChanged__(self, position: int):
-    self.positionSlider.setValue(position)
+    self.__positionSlider__.setValue(position)
 
   def __mediaPlayerDurationChanged__(self, duration: int):
-    self.positionSlider.setRange(0, duration)
+    self.__positionSlider__.setRange(0, duration)
 
   def __setMediaPlayerPosition__(self, position: int):
-    self.mediaPlayer.setPosition(position)
+    self.__mediaPlayer__.setPosition(position)
 
   def __handleError__(self):
-    self.playButton.setEnabled(False)
-    self.error.setText("Error: " + self.mediaPlayer.errorString())
+    self.__playButton__.setEnabled(False)
+    self.__error__.setText("Error: " + self.__mediaPlayer__.errorString())
  
 app = QApplication(sys.argv)
 mediaPlayer = MediaPlayer()
