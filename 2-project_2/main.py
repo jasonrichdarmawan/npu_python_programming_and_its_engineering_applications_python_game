@@ -19,9 +19,9 @@ class MediaPlayer(QMainWindow):
   chore 1: remove exitCall(self) function
   chore 2: add type annotations
   """
-  __meddiaPlayer__: QMediaPlayer
-  __playButton__: QPushButton
-  __positionSlider__: QSlider
+  __mediaPlayer__: QMediaPlayer
+  __mediaPlayerPlayButton__: QPushButton
+  __mediaPlayerPositionSlider__: QSlider
   __error__: QLabel
 
   def __init__(self):
@@ -47,15 +47,15 @@ class MediaPlayer(QMainWindow):
     videoWidget = QVideoWidget()
 
     # Play button
-    self.__playButton__ = QPushButton()
-    self.__playButton__.setEnabled(False)
-    self.__playButton__.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
-    self.__playButton__.clicked.connect(self.__playMediaPlayer__)
+    self.__mediaPlayerPlayButton__ = QPushButton()
+    self.__mediaPlayerPlayButton__.setEnabled(False)
+    self.__mediaPlayerPlayButton__.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
+    self.__mediaPlayerPlayButton__.clicked.connect(self.__playMediaPlayer__)
 
     # Position slider
-    self.__positionSlider__ = QSlider(Qt.Orientation.Horizontal)
-    self.__positionSlider__.setRange(0, 0)
-    self.__positionSlider__.sliderMoved.connect(self.__setMediaPlayerPosition__)
+    self.__mediaPlayerPositionSlider__ = QSlider(Qt.Orientation.Horizontal)
+    self.__mediaPlayerPositionSlider__.setRange(0, 0)
+    self.__mediaPlayerPositionSlider__.sliderMoved.connect(self.__setMediaPlayerPosition__)
 
     # volume control
     volumeSlider = QSlider(Qt.Orientation.Horizontal)
@@ -82,8 +82,8 @@ class MediaPlayer(QMainWindow):
     # Layout for controls
     controlLayout = QHBoxLayout()
     controlLayout.setContentsMargins(0, 0, 0, 0)
-    controlLayout.addWidget(self.__playButton__)
-    controlLayout.addWidget(self.__positionSlider__)
+    controlLayout.addWidget(self.__mediaPlayerPlayButton__)
+    controlLayout.addWidget(self.__mediaPlayerPositionSlider__)
 
     mainLayout = QVBoxLayout()
     mainLayout.addWidget(videoWidget)
@@ -105,8 +105,8 @@ class MediaPlayer(QMainWindow):
     fix 1: error message is not cleared
     fix 2: position slider is not hidden when media is not loaded
     """
-    self.__playButton__.setEnabled(False)
-    self.__positionSlider__.setRange(0, 0)
+    self.__mediaPlayerPlayButton__.setEnabled(False)
+    self.__mediaPlayerPositionSlider__.setRange(0, 0)
     self.__error__.setText("")
 
   def __openMediaFile__(self):
@@ -122,7 +122,7 @@ class MediaPlayer(QMainWindow):
       self.__resetState__()
 
       self.__mediaPlayer__.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
-      self.__playButton__.setEnabled(True)
+      self.__mediaPlayerPlayButton__.setEnabled(True)
 
   def __playMediaPlayer__(self):
     """
@@ -135,23 +135,23 @@ class MediaPlayer(QMainWindow):
 
   def __mediaPlayerStateChanged__(self, state: QMediaPlayer.State):
     if state == QMediaPlayer.State.PlayingState:
-      self.__playButton__.setIcon(self.style()
+      self.__mediaPlayerPlayButton__.setIcon(self.style()
                                   .standardIcon(QStyle.StandardPixmap.SP_MediaPause))
     else:
-      self.__playButton__.setIcon(self.style()
+      self.__mediaPlayerPlayButton__.setIcon(self.style()
                                   .standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
 
   def __mediaPlayerPositionChanged__(self, position: int):
-    self.__positionSlider__.setValue(position)
+    self.__mediaPlayerPositionSlider__.setValue(position)
 
   def __mediaPlayerDurationChanged__(self, duration: int):
-    self.__positionSlider__.setRange(0, duration)
+    self.__mediaPlayerPositionSlider__.setRange(0, duration)
 
   def __setMediaPlayerPosition__(self, position: int):
     self.__mediaPlayer__.setPosition(position)
 
   def __handleError__(self):
-    self.__playButton__.setEnabled(False)
+    self.__mediaPlayerPlayButton__.setEnabled(False)
     self.__error__.setText("Error: " + self.__mediaPlayer__.errorString())
  
 app = QApplication(sys.argv)
