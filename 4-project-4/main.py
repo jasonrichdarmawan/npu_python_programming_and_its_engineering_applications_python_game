@@ -14,12 +14,16 @@ class Gauge(QWidget):
     self.__animation__ = QPropertyAnimation(self, b"currentValue")
     self.setMinimumSize(400, 300)
 
-  def updateValue(self, new_value: int, stepSpeed: int):
-    clampedValue = max(self.__lowValue__, min(new_value, self.__highValue__))
+  def updateValue(self, newValue: int, stepSpeed: int):
+    """
+    stepSpeed per millisecond
+    """
+    clampedValue = max(self.__lowValue__, min(newValue, self.__highValue__))
 
     # Fix: the needle start from 0 instead of the current value
     self.__animation__.stop()
-    self.__animation__.setDuration(stepSpeed)
+    duration = int(abs(clampedValue - self.__currentValue__) / stepSpeed)
+    self.__animation__.setDuration(duration)
     self.__animation__.setStartValue(self.__currentValue__)
     self.__animation__.setEndValue(clampedValue)
     self.__animation__.start()
@@ -117,13 +121,14 @@ class MainWindow(QMainWindow):
     low = 0
     high = 10000
     tickmarkStep = 1000
+    needleSpeed = 10
 
     gauge = Gauge(low, high, tickmarkStep)
 
     gaugeControlSlider = QSlider(Qt.Orientation.Horizontal)
     gaugeControlSlider.setRange(low, high)
     gaugeControlSlider.setTickInterval(tickmarkStep)
-    gaugeControlSlider.valueChanged.connect(lambda: gauge.updateValue(gaugeControlSlider.value(), tickmarkStep))
+    gaugeControlSlider.valueChanged.connect(lambda: gauge.updateValue(gaugeControlSlider.value(), needleSpeed))
     
     mainLayout = QVBoxLayout()
     mainLayout.addWidget(gauge)
