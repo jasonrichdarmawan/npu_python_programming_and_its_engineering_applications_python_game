@@ -87,7 +87,7 @@ class Gauge(QWidget):
     painter.drawEllipse(QPointF(centerX, centerY), 5, 5)
 
   def __drawTick__(self, painter: QPainter, centralX: int, centralY: int, 
-                   circleRadius: int, value: int, tickLength: int, is_main=False):
+                   circleRadius: int, value: int, tickLength: int, isMain=False):
     # normalize the value to the range [0, 180]
     angle = 180 - ((value - self.__lowValue__) / 
                    (self.__highValue__ - self.__lowValue__)) * 180
@@ -101,7 +101,7 @@ class Gauge(QWidget):
     painter.drawLine(QPointF(outerX, outerY), QPointF(innerX, innerY))
 
     # Draw labels for main tickmarks
-    if is_main:
+    if isMain:
       labelRadius = circleRadius - tickLength - 15
       labelX = centralX + labelRadius * math.cos(angleRadian)
       labelY = centralY - labelRadius * math.sin(angleRadian)
