@@ -2,7 +2,7 @@ import sys
 import math
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QVBoxLayout, QSlider
 from PyQt5.QtCore import Qt, QPropertyAnimation, pyqtProperty, QPointF, QRectF
-from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtGui import QPainter, QPen, QPaintEvent
 
 class Gauge(QWidget):
   def __init__(self, lowValue: int, highValue: int, tickmarkStep: int):
@@ -36,7 +36,7 @@ class Gauge(QWidget):
     self.__currentValue__ = max(self.__lowValue__, min(value, self.__highValue__))
     self.update()
 
-  def paintEvent(self, event):
+  def paintEvent(self, _: QPaintEvent):
     painter = QPainter(self)
 
     centerX = self.width() / 2
