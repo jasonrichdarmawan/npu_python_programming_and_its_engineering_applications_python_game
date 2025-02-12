@@ -34,9 +34,9 @@ class MediaPlayer(QMainWindow):
     self.__mediaPlayer__.durationChanged.connect(self.__mediaPlayerDurationChanged__)
     self.__mediaPlayer__.error.connect(self.__handleError__)
 
-    self.__setup_ui__()
+    self.__setUpUI__()
 
-  def __setup_ui__(self):
+  def __setUpUI__(self):
     """
     chore 1: reoganize the code by separating concerns into dedicated methods
     """
