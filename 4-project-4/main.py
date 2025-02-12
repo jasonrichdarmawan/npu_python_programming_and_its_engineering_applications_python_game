@@ -7,15 +7,15 @@ from PyQt5.QtGui import QPainter, QPen
 class Gauge(QWidget):
   def __init__(self, lowValue: int, highValue: int, tickmarkStep: int):
     super().__init__()
-    self.__low__ = lowValue
-    self.__high__ = highValue
+    self.__lowValue__ = lowValue
+    self.__highValue__ = highValue
     self.__tickmarkStep__ = tickmarkStep
     self.__currentValue__ = lowValue
     self.__animation__ = QPropertyAnimation(self, b"currentValue")
     self.setMinimumSize(400, 300)
 
   def updateValue(self, new_value: int, stepSpeed: int):
-    clampedValue = max(self.__low__, min(new_value, self.__high__))
+    clampedValue = max(self.__lowValue__, min(new_value, self.__highValue__))
 
     # Fix: the needle start from 0 instead of the current value
     self.__animation__.stop()
@@ -29,7 +29,7 @@ class Gauge(QWidget):
     return self.__currentValue__
   @currentValue.setter
   def currentValue(self, value):
-    self.__currentValue__ = max(self.__low__, min(value, self.__high__))
+    self.__currentValue__ = max(self.__lowValue__, min(value, self.__highValue__))
     self.update()
 
   def paintEvent(self, event):
@@ -48,7 +48,7 @@ class Gauge(QWidget):
     painter.drawArc(x, y, width, height, startAngle, spanAngle)
 
     # Draw main tickmarks
-    tickmarks = list(range(self.__low__, self.__high__ + 1, self.__tickmarkStep__))
+    tickmarks = list(range(self.__lowValue__, self.__highValue__ + 1, self.__tickmarkStep__))
     for tickmark in tickmarks:
       self.__drawTick__(painter, centerX, centerY, circleRadius, tickmark, 10, True)
 
@@ -62,8 +62,8 @@ class Gauge(QWidget):
 
     # Draw needle
     # normalize the value to the range [0, 180]
-    angle = 180 - ((self.__currentValue__ - self.__low__) / 
-                   (self.__high__ - self.__low__)) * 180
+    angle = 180 - ((self.__currentValue__ - self.__lowValue__) / 
+                   (self.__highValue__ - self.__lowValue__)) * 180
     angleRadian = math.radians(angle)
     needleLength = circleRadius
     # ABC right triangle (the right below is orthogonal)
@@ -85,8 +85,8 @@ class Gauge(QWidget):
   def __drawTick__(self, painter: QPainter, centralX: int, centralY: int, 
                    circleRadius: int, value: int, tickLength: int, is_main=False):
     # normalize the value to the range [0, 180]
-    angle = 180 - ((value - self.__low__) / 
-                   (self.__high__ - self.__low__)) * 180
+    angle = 180 - ((value - self.__lowValue__) / 
+                   (self.__highValue__ - self.__lowValue__)) * 180
     angleRadian = math.radians(angle)
     
     # Draw tick line
