@@ -33,9 +33,9 @@ class DiaryApp:
     while True:
       print("Diary Management System")
       print("1. Write a new diary entry")
-      print("2. View all diary entries")
+      print("2. Preview all diary entries")
       print("3. Search for diary entries by keyword")
-      print("4. Delete a diary entry")
+      print("4. Delete diary entries")
       print("5. Quit")
 
       choice = input("Please enter your choice (1-5): ")
@@ -44,11 +44,11 @@ class DiaryApp:
         case "1":
           self.__writeNewDiaryEntryDialog__()
         case "2":
-          self.__printDiaryEntries__()
+          self.__previewDiaryEntries__()
         case "3":
-          self.__searchDiaryEntryByKeywordDialog__()
+          self.__searchDiaryEntriesByKeywordDialog__()
         case "4":
-          self.__deleteDiaryEntryDialog__()
+          self.__deleteDiaryEntriesDialog__()
         case "5" | "q":
           break
         case _: # default case
@@ -99,7 +99,7 @@ class DiaryApp:
     print("Diary entry successfully written!")
 
   @__pauseAfter__
-  def __printDiaryEntries__(self):
+  def __previewDiaryEntries__(self):
     """
     Function to view all diary entries.
 
@@ -122,7 +122,7 @@ class DiaryApp:
       print("%s...\n" % (preview))
 
   @__pauseAfter__
-  def __searchDiaryEntryByKeywordDialog__(self):
+  def __searchDiaryEntriesByKeywordDialog__(self):
     """
     Function to search for diary entries based on a keyword.
 
@@ -152,14 +152,16 @@ class DiaryApp:
       print("Found %d entries matching the keyword:" % (len(foundEntries)))
       for entry in foundEntries:
         date, title, content = entry.strip().split("|")
-        print(f"Date: {date}")
-        print(f"Title: {title}")
-        print(f"Preview: {content[:50]}...\n")
+        content = content.replace("\\n", "\n")
+        print("Date: %s" % (date))
+        print("Title: %s" % (title))
+        print("Content:")
+        print("%s\n" % (content))
     else:
-        print("No entries found matching the keyword.")
+        print("No entry found matching the keyword.")
 
   @__pauseAfter__
-  def __deleteDiaryEntryDialog__(self):
+  def __deleteDiaryEntriesDialog__(self):
     """
     Function to delete a specific diary entry.
 
@@ -179,24 +181,21 @@ class DiaryApp:
     with open(self.DIARY_FILE, "r") as f:
       entries = f.readlines()
 
-    entryFound = False
-    entryIndex = -1
+    foundEntryIndices: list[int] = []
     for index, entry in enumerate(entries):
       date, title, _ = entry.strip().split("|")
       if date == dateToDelete and title == titleToDelete:
-        entryFound = True
-        entryIndex = index
-        break
+        foundEntryIndices.append(index)
 
-    if not entryFound:
-      print("Diary entry not found.")
+    if len(foundEntryIndices) == 0:
+      print("No entry found.")
       return
 
-    filteredEntries = [entry for i, entry in enumerate(entries) if i != entryIndex]
+    filteredEntries = [entry for i, entry in enumerate(entries) if i not in foundEntryIndices]
     with open(self.DIARY_FILE, "w") as f:
       f.writelines(filteredEntries)
 
-    print("Diary entry successfully deleted!")
+    print("%d entries successfully deleted!" % (len(foundEntryIndices)))
 
 if __name__ == "__main__":
   app = DiaryApp()
