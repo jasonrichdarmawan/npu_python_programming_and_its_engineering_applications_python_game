@@ -54,7 +54,7 @@ class Gauge(QWidget):
     # Draw main tickmarks
     tickmarks = list(range(self.__lowValue__, self.__highValue__ + 1, self.__tickmarkStep__))
     for tickmark in tickmarks:
-      self.__drawTick__(painter, centerX, centerY, circleRadius, tickmark, 10, True)
+      self.__drawTickmark__(painter, centerX, centerY, circleRadius, tickmark, 10, True)
 
     # Draw minor tickmarks
     for i in range(len(tickmarks) - 1):
@@ -62,7 +62,7 @@ class Gauge(QWidget):
       end = tickmarks[i+1]
       step = (end - start) / 5
       for j in range(1, 5):
-        self.__drawTick__(painter, centerX, centerY, circleRadius, start + j * step, 5)
+        self.__drawTickmark__(painter, centerX, centerY, circleRadius, start + j * step, 5)
 
     # Draw needle
     # normalize the value to the range [0, 180]
@@ -86,7 +86,7 @@ class Gauge(QWidget):
     painter.setBrush(Qt.GlobalColor.red)
     painter.drawEllipse(QPointF(centerX, centerY), 5, 5)
 
-  def __drawTick__(self, painter: QPainter, centralX: int, centralY: int, 
+  def __drawTickmark__(self, painter: QPainter, centralX: int, centralY: int, 
                    circleRadius: int, value: int, tickLength: int, isMain=False):
     # normalize the value to the range [0, 180]
     angle = 180 - ((value - self.__lowValue__) / 
